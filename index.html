@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Inventory SQL Queries</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet"/>
+  <style>
+    * {
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #0c0c0c, #1a1a1a);
+      color: #e2e8f0;
+      display: flex;
+      min-height: 100vh;
+      flex-direction: row;
+    }
+    .sidebar {
+      width: 250px;
+      background-color: #111827;
+      padding: 30px 20px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      flex-shrink: 0;
+    }
+    .sidebar h2 {
+      font-size: 1.2rem;
+      color: #00f0ff;
+      margin-bottom: 1rem;
+    }
+    .sidebar a {
+      color: #cbd5e1;
+      text-decoration: none;
+      display: block;
+      margin: 0.5rem 0;
+      font-size: 0.95rem;
+      transition: 0.3s;
+    }
+    .sidebar a:hover {
+      color: #00f0ff;
+      text-decoration: underline;
+    }
+    .main {
+      flex: 1;
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      max-width: 1000px;
+      margin-bottom: 40px;
+    }
+    header h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      background: linear-gradient(to right, #00f0ff, #6f42c1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin: 0;
+    }
+    .dashboard-link {
+      background-color: #00f0ff;
+      color: #0f0f0f;
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background 0.3s;
+    }
+    .dashboard-link:hover {
+      background-color: #0ef;
+    }
+    .query-block {
+      width: 100%;
+      max-width: 1000px;
+      margin-bottom: 40px;
+    }
+    .query-block h3 {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+      color: #00f0ff;
+    }
+    pre {
+      background-color: #1f2937;
+      padding: 20px;
+      border-radius: 12px;
+      overflow-x: auto;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: #e0f2fe;
+    }
+    footer {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #64748b;
+      padding: 20px;
+      margin-top: auto;
+    }
+    @media (max-width: 768px) {
+      body {
+        flex-direction: column;
+      }
+      .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+      }
+      .main {
+        padding: 20px;
+      }
+      header {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+      }
+      header h1 {
+        font-size: 2rem;
+      }
+      .dashboard-link {
+        width: 100%;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <h2>Reference 📌</h2>
+    <a href="#q1">1. Total Rows</a>
+    <a href="#q2">2. Unique Values</a>
+    <a href="#q3">3. Purchase & Expiry Range</a>
+    <a href="#q4">4. Quantity Summary</a>
+    <a href="#q5">5. Expired Items</a>
+    <a href="#q6">6. Expiring Soon</a>
+    <a href="#q7">7. Average Shelf Life</a>
+    <a href="#q8">8. Out of Stock</a>
+    <a href="#q9">9. Top 5 by Quantity</a>
+    <a href="#q10">10. Highest Return Rates</a>
+    <a href="#q11">11. Highest Stock Location</a>
+    <a href="#q12">12. Most Frequent Item</a>
+    <a href="#q13">13. Quantity Stats</a>
+    <a href="#q14">14. Return Rate by Store</a>
+    <a href="#q15">15. Monthly Trends</a>
+    <a href="#q16">16. Top 5 Batches</a>
+    <a href="#q17">17. Latest Purchases</a>
+  </div>
+
+  <div class="main">
+    <header>
+      <h1>Inventory SQL Exploration</h1>
+      <a href="https://yashveerdalal.github.io/InventoryManagement-Visualisation/" target="_blank" class="dashboard-link">Continue to Dashboard →</a>
+    </header>
+
+    <!-- Begin Query Blocks -->
+    <div id="q1" class="query-block"><h3>1. Total Rows</h3><pre><code>SELECT COUNT(*) AS total_rows FROM inventory_stageB;</code></pre></div>
+    <div id="q2" class="query-block"><h3>2. Unique Values</h3><pre><code>SELECT COUNT(DISTINCT item_name) AS unique_items, COUNT(DISTINCT batch_no) AS unique_batches, COUNT(DISTINCT store_location) AS unique_store_locations FROM inventory_stageB;</code></pre></div>
+    <div id="q3" class="query-block"><h3>3. Purchase & Expiry Range</h3><pre><code>SELECT MIN(purchase_date) AS earliest_purchase, MAX(purchase_date) AS latest_purchase, MIN(expiry_date) AS earliest_expiry, MAX(expiry_date) AS latest_expiry FROM inventory_stageB;</code></pre></div>
+    <div id="q4" class="query-block"><h3>4. Quantity Summary</h3><pre><code>SELECT SUM(quantity) AS total_quantity, SUM(sold_units) AS total_sold_units, SUM(returned_units) AS total_returned_units FROM inventory_stageB;</code></pre></div>
+    <div id="q5" class="query-block"><h3>5. Expired Items</h3><pre><code>SELECT COUNT(*) AS expired_items FROM inventory_stageB WHERE expiry_date < CURDATE();</code></pre></div>
+    <div id="q6" class="query-block"><h3>6. Expiring Soon</h3><pre><code>SELECT COUNT(*) AS expiring_soon FROM inventory_stageB WHERE expiry_date BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 30 DAY);</code></pre></div>
+    <div id="q7" class="query-block"><h3>7. Average Shelf Life</h3><pre><code>SELECT ROUND(AVG(DATEDIFF(expiry_date, purchase_date)), 1) AS avg_shelf_life FROM inventory_stageB WHERE expiry_date > purchase_date;</code></pre></div>
+    <div id="q8" class="query-block"><h3>8. Out of Stock</h3><pre><code>SELECT COUNT(*) AS out_of_stock_items FROM inventory_stageB WHERE quantity = 0;</code></pre></div>
+    <div id="q9" class="query-block"><h3>9. Top 5 by Quantity</h3><pre><code>SELECT item_name, SUM(quantity) AS total_quantity FROM inventory_stageB GROUP BY item_name ORDER BY total_quantity DESC LIMIT 5;</code></pre></div>
+    <div id="q10" class="query-block"><h3>10. Highest Return Rates</h3><pre><code>SELECT item_name, SUM(sold_units) AS total_sold, SUM(returned_units) AS total_returned, ROUND(SUM(returned_units)/NULLIF(SUM(sold_units), 0), 2) AS return_rate FROM inventory_stageB GROUP BY item_name HAVING total_sold > 0 ORDER BY return_rate DESC LIMIT 5;</code></pre></div>
+    <div id="q11" class="query-block"><h3>11. Highest Stock Location</h3><pre><code>SELECT store_location, SUM(quantity) AS total_quantity FROM inventory_stageB GROUP BY store_location ORDER BY total_quantity DESC LIMIT 1;</code></pre></div>
+    <div id="q12" class="query-block"><h3>12. Most Frequent Item</h3><pre><code>SELECT item_name, COUNT(*) AS frequency FROM inventory_stageB GROUP BY item_name ORDER BY frequency DESC LIMIT 1;</code></pre></div>
+    <div id="q13" class="query-block"><h3>13. Quantity Stats</h3><pre><code>SELECT MIN(quantity) AS min_quantity, MAX(quantity) AS max_quantity, ROUND(AVG(quantity), 1) AS avg_quantity FROM inventory_stageB;</code></pre></div>
+    <div id="q14" class="query-block"><h3>14. Return Rate by Store</h3><pre><code>SELECT store_location, ROUND(SUM(returned_units)/NULLIF(SUM(sold_units), 0), 4) AS return_rate FROM inventory_stageB GROUP BY store_location HAVING SUM(sold_units) > 0 ORDER BY return_rate DESC;</code></pre></div>
+    <div id="q15" class="query-block"><h3>15. Monthly Trends</h3><pre><code>SELECT DATE_FORMAT(purchase_date, '%Y-%m') AS purchase_month, COUNT(*) AS items_purchased, SUM(quantity) AS total_quantity FROM inventory_stageB GROUP BY purchase_month ORDER BY purchase_month;</code></pre></div>
+    <div id="q16" class="query-block"><h3>16. Top 5 Batches</h3><pre><code>SELECT batch_no, item_name, SUM(quantity) AS total_quantity FROM inventory_stageB GROUP BY batch_no, item_name ORDER BY total_quantity DESC LIMIT 5;</code></pre></div>
+    <div id="q17" class="query-block"><h3>17. Latest Purchases</h3><pre><code>SELECT * FROM inventory_stageB ORDER BY purchase_date DESC LIMIT 10;</code></pre></div>
+    <!-- End Query Blocks -->
+
+    <footer>
+      © 2025 Yashveer Dalal — SQL EDA Project
+    </footer>
+  </div>
+</body>
+</html>
